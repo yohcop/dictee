@@ -224,6 +224,12 @@
         let currentIndex = 0;
         let fontSize = 48;
 
+        const textInput = document.getElementById('text-input');
+        textInput.value = localStorage.getItem('dictee-text') || '';
+        textInput.addEventListener('input', () => {
+            localStorage.setItem('dictee-text', textInput.value);
+        });
+
         function changeFontSize(delta) {
             fontSize = Math.max(16, Math.min(120, fontSize + delta));
             document.getElementById('section-display').style.fontSize = fontSize + 'px';
