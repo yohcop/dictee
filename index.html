@@ -130,13 +130,15 @@
         #section-display .section {
             color: var(--muted);
             white-space: pre-wrap;
+            padding: 2px 6px;
+            margin: 0 -2px;
+            border-radius: 4px;
+            display: inline;
         }
 
         #section-display .section.current {
             color: #fff;
             background: var(--accent);
-            padding: 5px 15px;
-            border-radius: 8px;
         }
 
         #progress {
@@ -153,7 +155,7 @@
             color: var(--hint);
         }
 
-        #back-btn, #theme-btn {
+        #back-btn, #theme-btn, .font-btn {
             position: fixed;
             top: 20px;
             padding: 10px 20px;
@@ -173,7 +175,22 @@
             right: 20px;
         }
 
-        #back-btn:hover, #theme-btn:hover {
+        #font-controls {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: none;
+        }
+
+        #font-controls .font-btn {
+            position: static;
+            padding: 10px 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        #back-btn:hover, #theme-btn:hover, .font-btn:hover {
             opacity: 0.8;
         }
     </style>
@@ -191,6 +208,10 @@
 
     <div id="presentation-mode">
         <button id="back-btn" onclick="exitPresentation()">Back to Edit</button>
+        <div id="font-controls">
+            <button class="font-btn" onclick="changeFontSize(-8)">-</button>
+            <button class="font-btn" onclick="changeFontSize(8)">+</button>
+        </div>
         <div id="section-container">
             <div id="section-display"></div>
         </div>
@@ -201,6 +222,12 @@
     <script>
         let sections = [];
         let currentIndex = 0;
+        let fontSize = 48;
+
+        function changeFontSize(delta) {
+            fontSize = Math.max(16, Math.min(120, fontSize + delta));
+            document.getElementById('section-display').style.fontSize = fontSize + 'px';
+        }
 
         function toggleTheme() {
             document.body.classList.toggle('light');
@@ -224,11 +251,13 @@
             currentIndex = 0;
             document.getElementById('input-mode').style.display = 'none';
             document.getElementById('presentation-mode').style.display = 'flex';
+            document.getElementById('font-controls').style.display = 'block';
             updateDisplay();
         }
 
         function exitPresentation() {
             document.getElementById('presentation-mode').style.display = 'none';
+            document.getElementById('font-controls').style.display = 'none';
             document.getElementById('input-mode').style.display = 'block';
         }
 
